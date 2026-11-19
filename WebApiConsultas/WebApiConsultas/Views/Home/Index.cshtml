@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    .borde {
+        border: solid 1px black;
+        text-align: center;
+        background-color:red;
+        color: white;
+    }
+
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="borde">Código</th>
+                        <th class="borde">Nombre Producto</th>
+                        <th class="borde">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (ViewBag.listado != null)
+                        {
+                            foreach (var resp in ViewBag.listado)
+                            {
+                                <tr>
+                                    <td>@resp.CodProducto</td>
+                                    <td>@resp.NomProducto</td>
+                                    <td>@resp.PrecioProducto</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>        
+    </div>   
+</div>

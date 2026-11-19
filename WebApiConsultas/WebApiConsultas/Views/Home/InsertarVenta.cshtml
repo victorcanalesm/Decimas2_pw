@@ -1,0 +1,118 @@
+﻿<style>
+    .borde {
+        border: solid 1px black;
+        text-align: center;
+        background-color:red;
+        color: white;
+    }
+
+</style>
+<script>
+    $(document).ready(function(){
+        cargaProducto();
+        cargaTabla();
+    });
+
+    function guardar(){
+        //javascript
+        var cantidad = document.getElementById("txtCantidad").value;
+        //jquery
+        var producto = $("#cmbProducto").val();//TOMA EL ID DEL COMBOBOX
+        if(cantidad == ""){
+            alert("Debe ingresar la cantidad");
+        }else{
+            $.ajax({
+                url: "../Home/VentaInsertar",
+                method: "POST",
+                data: {Producto: producto, Cantidad: cantidad},
+                success:function(response){
+                    cargaTabla();
+                    alert(response.retorno);
+                }
+            });
+        }        
+    }
+
+    function cargaProducto(){
+        $.ajax({
+            url: "../Home/cargaProductos",
+            method: "GET",
+            success:function(response){
+                console.log(response);
+                var opciones = "";
+                $.each(response, function(key, value){
+                    opciones += "<option value='" + value.codProducto + "'>" + value.nomProducto + "</option>";
+                });
+                $("#cmbProducto").html(opciones);
+            }
+        });
+    }
+
+    function cargaTabla(){
+         $.ajax({
+            url: "../Home/cargaVentas",
+            method: "GET",
+            success:function(response){
+                console.log(response);
+                var tabla = "";
+                 $.each(response, function(key, value){
+                     tabla += "<tr>";
+                     tabla += "<td>"+value.idVenta+"</td>";
+                     tabla += "<td>"+value.nomProducto+"</td>";
+                     tabla += "<td style='text-align:right;'>"+value.precioProducto+"</td>";
+                     tabla += "<td style='text-align:right;'>"+value.cantidad+"</td>";
+                     tabla += "<td style='text-align:right;'>"+(value.precioProducto*value.cantidad)+"</td>";
+                     tabla += "</tr>";
+                 });
+                $("#contenidoTabla").html(tabla);
+            }
+        });
+    }
+</script>
+
+<h1>Insertar Venta</h1>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <label>Producto</label>
+        </div>
+        <div class="col-10">
+            <select id="cmbProducto"></select>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-2">
+            <label>Cantidad</label>
+        </div>
+        <div class="col-10">
+            <input type="number" id="txtCantidad" />
+        </div>
+    </div>
+    <br />
+     <div class="row">
+         <div class="col-6" style="text-align:right">
+            <button onclick="guardar()">Guardar</button>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="borde">Código</th>
+                        <th class="borde">Nombre Producto</th>
+                        <th class="borde">Precio</th>
+                        <th class="borde">Cantidad</th>
+                        <th class="borde">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="contenidoTabla"></tbody>
+            </table>
+        </div>        
+    </div>   
+</div>

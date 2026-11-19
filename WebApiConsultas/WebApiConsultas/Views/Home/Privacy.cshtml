@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Insertar";
+}
+<style>
+    .borde {
+        border: solid 1px black;
+        text-align: center;
+        background-color: red;
+        color: white;
+    }
+
+</style>
+<h1>@ViewData["Title"]</h1>
+<br />
+<form asp-action="InsertarDatos" method="post">
+    <label>Código Producto</label>
+    <input type="number" id="txtCodigo" name="txtCodigo" required />
+    <br />
+    <label>Nombre Producto</label>
+    <input type="text" id="txtNombre" name="txtNombre" required />
+    <br />
+    <label>Precio Producto</label>
+    <input type="number" id="txtPrecio" name="txtPrecio" required />
+    <br />
+    <input type="submit" value="Guardar" class="btn btn-primary" />
+</form>
+<br />
+<h1>@ViewBag.mensaje</h1>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="borde">Código</th>
+                        <th class="borde">Nombre Producto</th>
+                        <th class="borde">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (ViewBag.listado != null)
+                        {
+                            foreach (var resp in ViewBag.listado)
+                            {
+                                <tr>
+                                    <td>@resp.CodProducto</td>
+                                    <td>@resp.NomProducto</td>
+                                    <td>@resp.PrecioProducto</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
